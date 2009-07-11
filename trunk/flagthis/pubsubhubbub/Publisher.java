@@ -18,11 +18,15 @@ public class Publisher {
 	 * 
 	 * @return HTTP Response code. 200 is ok. Anything else smells like trouble
 	 */
+
 	public int publish(String hub, String topic_url) throws IOException {
 
+
 		if ((hub != null) && (topic_url != null)) {
-			
-			// URL should validate if the strings are really URLs. Will throw Exception if it isn't
+			DefaultHttpClient httpclient = new DefaultHttpClient();
+
+			// URL should validate if the strings are really URLs. Will throw
+			// Exception if it isn't
 			@SuppressWarnings("unused")
 			URL verifying_topic_url = new URL(topic_url);
 			@SuppressWarnings("unused")
@@ -33,7 +37,6 @@ public class Publisher {
 
 			httppost.setHeader("User-agent", "flagthis.pubsubhubbub 0.2");
 
-			DefaultHttpClient httpclient = new DefaultHttpClient();
 			HttpResponse response = httpclient.execute(httppost);
 
 			return response.getStatusLine().getStatusCode();
