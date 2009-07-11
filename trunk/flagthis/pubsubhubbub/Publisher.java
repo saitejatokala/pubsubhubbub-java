@@ -1,46 +1,42 @@
 package flagthis.pubsubhubbub;
 
-import java.io.DataInputStream;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.*;
+import org.apache.http.impl.client.DefaultHttpClient;
 
 public class Publisher {
 
 	/*
-	 * 
 	 * @throws IOException If an input or output exception occurred
 	 * 
 	 * @param The Hub address you want to publish it to
+	 * 
 	 * @param The topic_url you want to publish
+	 * 
 	 * @return HTTP Response code. 200 is ok. Anything else smells like trouble
 	 */
 	public int publish(String hub, String topic_url) throws IOException {
 
-		if (hub != null) {
+		if ((hub != null) && (topic_url != null)) {
+			
+			// URL should validate if the strings are really URLs. Will throw Exception if it isn't
 			@SuppressWarnings("unused")
 			URL verifying_topic_url = new URL(topic_url);
+			@SuppressWarnings("unused")
 			URL hub_url = new URL(hub);
 
-			String data = URLEncoder.encode("hub.mode", "UTF-8") + "="
-					+ URLEncoder.encode("publish", "UTF-8");
-			data += "&" + URLEncoder.encode("hub.url", "UTF-8") + "="
-					+ URLEncoder.encode(topic_url, "UTF-8");
+			HttpPost httppost = new HttpPost(hub + "?" + "hub.mode=publish&"
+					+ "hub.url=" + URLEncoder.encode(topic_url, "UTF-8"));
 
-			HttpURLConnection connection = (HttpURLConnection) hub_url
-					.openConnection();
-			connection
-					.setRequestProperty("User-agent", "flagthis.pubsubhubbub");
+			httppost.setHeader("User-agent", "flagthis.pubsubhubbub 0.2");
 
-			connection.setDoOutput(true);
-			OutputStreamWriter wr = new OutputStreamWriter(connection
-					.getOutputStream());
-			wr.write(data);
-			wr.flush();
-			
-			return connection.getResponseCode();
+			DefaultHttpClient httpclient = new DefaultHttpClient();
+			HttpResponse response = httpclient.execute(httppost);
+
+			return response.getStatusLine().getStatusCode();
 		}
 		return 400;
 	}
