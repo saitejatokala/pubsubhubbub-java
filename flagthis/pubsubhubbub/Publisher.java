@@ -1,13 +1,90 @@
 package flagthis.pubsubhubbub;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLEncoder;
+
+import javax.net.ssl.SSLSocketFactory;
+
+import org.apache.http.HeaderElement;
+import org.apache.http.HeaderElementIterator;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpVersion;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.conn.ClientConnectionManager;
+import org.apache.http.conn.ConnectionKeepAliveStrategy;
+import org.apache.http.conn.params.ConnManagerParams;
+import org.apache.http.conn.params.ConnPerRouteBean;
+import org.apache.http.conn.routing.HttpRoute;
+import org.apache.http.conn.scheme.PlainSocketFactory;
+import org.apache.http.conn.scheme.Scheme;
+import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
+import org.apache.http.message.BasicHeaderElementIterator;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
+import org.apache.http.params.HttpProtocolParams;
+import org.apache.http.protocol.ExecutionContext;
+import org.apache.http.protocol.HTTP;
+import org.apache.http.protocol.HttpContext;
 
 public class Publisher {
+
+	DefaultHttpClient httpClient = null;
+
+	public Publisher() {
+		HttpParams params = new BasicHttpParams();
+		ConnManagerParams.setMaxTotalConnections(params, 200);
+		ConnPerRouteBean connPerRoute = new ConnPerRouteBean(20);
+		connPerRoute.setDefaultMaxPerRoute(50);
+		ConnManagerParams.setMaxConnectionsPerRoute(params, connPerRoute);
+
+		SchemeRegistry schemeRegistry = new SchemeRegistry();
+		schemeRegistry.register(new Scheme("http", PlainSocketFactory
+				.getSocketFactory(), 80));
+		ClientConnectionManager cm = new ThreadSafeClientConnManager(params,
+				schemeRegistry);
+		httpClient = new DefaultHttpClient(cm, params);
+
+		httpClient.setKeepAliveStrategy(new ConnectionKeepAliveStrategy() {
+
+			public long getKeepAliveDuration(HttpResponse response,
+					HttpContext context) {
+				HeaderElementIterator it = new BasicHeaderElementIterator(
+						response.headerIterator(HTTP.CONN_KEEP_ALIVE));
+				while (it.hasNext()) {
+					HeaderElement he = it.nextElement();
+					String param = he.getName();
+					String value = he.getValue();
+					if (value != null && param.equalsIgnoreCase("timeout")) {
+						try {
+							return Long.parseLong(value) * 1000;
+						} catch (NumberFormatException ignore) {
+						}
+					}
+				}
+				HttpHost target = (HttpHost) context
+						.getAttribute(ExecutionContext.HTTP_TARGET_HOST);
+				if ("www.naughty-server.com".equalsIgnoreCase(target
+						.getHostName())) {
+					// Keep alive for 5 seconds only
+					return 5 * 1000;
+				} else {
+					// otherwise keep alive for 30 seconds
+					return 30 * 1000;
+				}
+			}
+
+		});
+	}
 
 	/*
 	 * @throws IOException If an input or output exception occurred
@@ -18,12 +95,9 @@ public class Publisher {
 	 * 
 	 * @return HTTP Response code. 200 is ok. Anything else smells like trouble
 	 */
-
-	public int publish(String hub, String topic_url) throws IOException {
-
+	public int execute(String hub, String topic_url) throws Exception {
 
 		if ((hub != null) && (topic_url != null)) {
-			DefaultHttpClient httpclient = new DefaultHttpClient();
 
 			// URL should validate if the strings are really URLs. Will throw
 			// Exception if it isn't
@@ -37,9 +111,11 @@ public class Publisher {
 
 			httppost.setHeader("User-agent", "flagthis.pubsubhubbub 0.2");
 
-			HttpResponse response = httpclient.execute(httppost);
+			GetThread thread = new GetThread(httpClient, httppost);
+			thread.start();
+			thread.join();
 
-			return response.getStatusLine().getStatusCode();
+			return thread.httpresponse.getStatusLine().getStatusCode();
 		}
 		return 400;
 	}
