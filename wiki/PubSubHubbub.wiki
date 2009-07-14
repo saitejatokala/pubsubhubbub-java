@@ -2,9 +2,6 @@
 
 = Introduction =
 
-This is an attempt to implement parts of pubsubhubbub in java.
-
-
-= Details =
+PubSubHubbub-java currently implements the client portion of pubsubhubbub publisher mechanism in java. Other parts of the protocol are being worked on.
 
 If you are interested in contributing please contact me for access. 
