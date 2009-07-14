@@ -71,18 +71,11 @@ public class Publisher {
 						}
 					}
 				}
-				HttpHost target = (HttpHost) context
-						.getAttribute(ExecutionContext.HTTP_TARGET_HOST);
-				if ("www.naughty-server.com".equalsIgnoreCase(target
-						.getHostName())) {
-					// Keep alive for 5 seconds only
-					return 5 * 1000;
-				} else {
-					// otherwise keep alive for 30 seconds
-					return 30 * 1000;
-				}
+				// default keepalive is 60 seconds. This is higher than usual
+				// since the number of hubs it should be talking to should be
+				// small
+				return 30 * 1000;
 			}
-
 		});
 	}
 
