@@ -1,0 +1,10 @@
+#PubSubHubbub-java
+
+= Introduction =
+
+This is an attempt to implement parts of pubsubhubbub in java.
+
+
+= Details =
+
+If you are interested in contributing please contact me for access. 
