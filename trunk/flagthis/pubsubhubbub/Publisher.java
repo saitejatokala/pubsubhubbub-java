@@ -5,9 +5,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.net.ssl.SSLSocketFactory;
 
+import org.apache.http.Header;
 import org.apache.http.HeaderElement;
 import org.apache.http.HeaderElementIterator;
 import org.apache.http.HttpEntity;
@@ -15,6 +18,7 @@ import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.ClientConnectionManager;
@@ -25,9 +29,12 @@ import org.apache.http.conn.routing.HttpRoute;
 import org.apache.http.conn.scheme.PlainSocketFactory;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
+import org.apache.http.entity.BasicHttpEntity;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.message.BasicHeaderElementIterator;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
@@ -35,6 +42,8 @@ import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.ExecutionContext;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.protocol.HttpContext;
+import org.apache.http.NameValuePair;
+import org.apache.http.NameValuePair;
 
 public class Publisher {
 
@@ -99,9 +108,15 @@ public class Publisher {
 			@SuppressWarnings("unused")
 			URL hub_url = new URL(hub);
 
-			HttpPost httppost = new HttpPost(hub + "?" + "hub.mode=publish&"
-					+ "hub.url=" + URLEncoder.encode(topic_url, "UTF-8"));
+			HttpPost httppost = new HttpPost(hub);
 
+			List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+			nvps.add(new BasicNameValuePair("hub.mode", "publish"));
+			nvps.add(new BasicNameValuePair("hub.url", topic_url));
+			httppost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
+
+			httppost.setHeader("Content-type",
+					"application/x-www-form-urlencoded");
 			httppost.setHeader("User-agent", "flagthis.pubsubhubbub 0.2");
 
 			GetThread thread = new GetThread(httpClient, httppost);
@@ -112,5 +127,4 @@ public class Publisher {
 		}
 		return 400;
 	}
-
 }

@@ -49,8 +49,12 @@ public class Discovery {
 		XPath xPath = factory.newXPath();
 		XPathExpression xPathExpression;
 		String hub;
-		xPathExpression = xPath.compile("//link[@rel='hub']/@href");
+		xPathExpression = xPath.compile("/feed/link[@rel='hub']/@href");
 		hub = (String) xPathExpression.evaluate(doc);
+		if ((hub==null)||(hub=="")){
+			xPathExpression = xPath.compile("//link[@rel='hub']/@href");
+			hub = (String) xPathExpression.evaluate(doc);			
+		}
 		return hub;
 	}
 
