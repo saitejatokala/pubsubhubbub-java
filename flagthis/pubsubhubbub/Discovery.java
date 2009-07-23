@@ -1,3 +1,10 @@
+/*
+ *
+ *@author royans K tharakan | http://royans.net/ | rkt@pobox.com
+ * Released under Apache License 2.0
+ *
+ */
+
 package flagthis.pubsubhubbub;
 
 import java.io.StringReader;
