@@ -4,6 +4,10 @@
 
 You can find more information of the project in the [http://code.google.com/p/pubsubhubbub/ PubSubHubbub Google site] 
 
+===Specification===
+
+The PubSubHubbub-java project is implementating the 0.3 version of the specification. It can be found at [http://pubsubhubbub.googlecode.com/svn/trunk/pubsubhubbub-core-0.3.html Protocol Specifications]
+
 ===Implementation===
 
 PubSubHubbub-java currently implements the client portion of pubsubhubbub publisher mechanism in java. Other parts of the protocol are being worked on.
