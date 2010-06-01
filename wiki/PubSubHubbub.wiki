@@ -1,5 +1,4 @@
-
-= Introduction =
+==Introduction==
 
 PubSubHubbub-java currently implements the client portion of pubsubhubbub publisher mechanism in java. Other parts of the protocol are being worked on.
 
