@@ -4,10 +4,15 @@
 
 You can find more information of the project in the [http://code.google.com/p/pubsubhubbub/ PubSubHubbub Google site] 
 
+===Implementation===
 
 PubSubHubbub-java currently implements the client portion of pubsubhubbub publisher mechanism in java. Other parts of the protocol are being worked on.
 
 Google Group for discussion on this client is here 
 <a href="http://groups.google.com/group/pubsubhubbub-java">http://groups.google.com/group/pubsubhubbub-java</a>
 
-If you are interested in contributing please contact me for access at royans at g mail.com. 
+===Contribution===
+
+If you are interested in contributing to the project, please contact royans(at)gmail.com. 
+
+- The Google PubSubHubbub-java Team 
