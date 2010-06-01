@@ -1,6 +1,6 @@
 ==Introduction==
 
-PubSubHubbub is an open protocol for distributed Publish/subscribe communication on the internet. The protocol extends the Atom and RSS protocols for data feeds. The main purpose is to provide near-instant notifications of change updates, which would improve on the typical situation where a client periodically polls the feed server at some arbitrary interval.
+[http://code.google.com/p/pubsubhubbub/ PubSubHubbub] is an open protocol for distributed Publish/subscribe communication on the internet. The protocol extends the Atom and RSS protocols for data feeds. The main purpose is to provide near-instant notifications of change updates, which would improve on the typical situation where a client periodically polls the feed server at some arbitrary interval.
 
 
 PubSubHubbub-java currently implements the client portion of pubsubhubbub publisher mechanism in java. Other parts of the protocol are being worked on.
