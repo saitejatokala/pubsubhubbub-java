@@ -1,4 +1,4 @@
-==Introduction==
+==Overview==
 
 [http://code.google.com/p/pubsubhubbub/ PubSubHubbub] is an open protocol for distributed Publish/subscribe communication on the internet. The protocol extends the [http://www.ietf.org/rfc/rfc4287.txt Atom] and RSS protocols for data feeds. The main purpose is to provide near-instant notifications of change updates, which would improve on the typical situation where a client periodically polls the feed server at some arbitrary interval.
 
