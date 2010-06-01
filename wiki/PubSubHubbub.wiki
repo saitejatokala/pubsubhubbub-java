@@ -1,4 +1,3 @@
-#PubSubHubbub-java
 
 = Introduction =
 
