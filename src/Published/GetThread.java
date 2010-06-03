@@ -1,4 +1,4 @@
-package flagthis.pubsubhubbub;
+package Published;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;

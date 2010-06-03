@@ -1,11 +1,4 @@
-/*
- *
- *@author royans K tharakan | http://royans.net/ | rkt@pobox.com
- * Released under Apache License 2.0
- *
- */
-
-package flagthis.pubsubhubbub;
+package Published;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -32,11 +25,14 @@ import org.apache.http.protocol.HTTP;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.NameValuePair;
 
+import com.ericsson.research.ergo.rssagent.PuSH.Web;
+
 public class Publisher {
 
 	DefaultHttpClient httpClient = null;
-
+	
 	public Publisher() {
+		
 		HttpParams params = new BasicHttpParams();
 		ConnManagerParams.setMaxTotalConnections(params, 200);
 		ConnPerRouteBean connPerRoute = new ConnPerRouteBean(20);
@@ -100,11 +96,11 @@ public class Publisher {
 			List<NameValuePair> nvps = new ArrayList<NameValuePair>();
 			nvps.add(new BasicNameValuePair("hub.mode", "publish"));
 			nvps.add(new BasicNameValuePair("hub.url", topic_url));
+			
 			httppost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
 
-			httppost.setHeader("Content-type",
-					"application/x-www-form-urlencoded");
-			httppost.setHeader("User-agent", "flagthis.pubsubhubbub 0.2");
+			httppost.setHeader("Content-type","application/x-www-form-urlencoded");
+			httppost.setHeader("User-agent", "pubsubhubbub 0.3");
 
 			GetThread thread = new GetThread(httpClient, httppost);
 			thread.start();

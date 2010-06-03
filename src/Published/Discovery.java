@@ -1,11 +1,4 @@
-/*
- *
- *@author royans K tharakan | http://royans.net/ | rkt@pobox.com
- * Released under Apache License 2.0
- *
- */
-
-package flagthis.pubsubhubbub;
+package Published;
 
 import java.io.StringReader;
 import java.util.ArrayList;
@@ -27,12 +20,60 @@ import javax.xml.xpath.*;
 public class Discovery {
 
 	public Discovery() {
+	} 
+	
+	public String hasHub(Document doc) throws Exception {
+		String hub = null;
+		
+		XPathFactory factory = XPathFactory.newInstance();
+		XPath xPath = factory.newXPath();
+		XPathExpression xPathExpression;
+		
+		try{
+			xPathExpression = xPath.compile("/feed/link[@rel='hub']/@href");
+			hub = (String) xPathExpression.evaluate(doc);
+			if ((hub==null)||(hub=="")){
+				xPathExpression = xPath.compile("//link[@rel='hub']/@href");
+				hub = (String) xPathExpression.evaluate(doc);			
+			}	
+			
+			if (hub ==""){
+				return null;
+			}
+			
+			return hub;
+		
+		} catch (XPathExpressionException e) {
+			return null;
+		}
 	}
 
-	public String hasHub(String feed) throws Exception {
-		return null;
-	}
+	public String hasTopic(Document doc){
+		String topic = null;
+		
+		XPathFactory factory = XPathFactory.newInstance();
+		XPath xPath = factory.newXPath();
+		XPathExpression xPathExpression;
 
+		try {
+			xPathExpression = xPath.compile("/feed/link[@rel='self']/@href");
+			topic = (String) xPathExpression.evaluate(doc);
+			if ((topic==null)||(topic.equals(""))){
+				xPathExpression = xPath.compile("//link[@rel='self']/@href");
+				topic = (String) xPathExpression.evaluate(doc);			
+			}
+			
+			if (topic.equals("")){
+				return null;
+			}
+			return topic;
+			
+		} catch (XPathExpressionException e) {
+		    return null;
+		}
+		
+	}
+	
 	public String getContents(String feed) throws Exception {
 		String response = null;
 		HttpClient httpclient = new DefaultHttpClient();
@@ -58,7 +99,7 @@ public class Discovery {
 		String hub;
 		xPathExpression = xPath.compile("/feed/link[@rel='hub']/@href");
 		hub = (String) xPathExpression.evaluate(doc);
-		if ((hub==null)||(hub=="")){
+		if ((hub==null)||(hub.equals(""))){
 			xPathExpression = xPath.compile("//link[@rel='hub']/@href");
 			hub = (String) xPathExpression.evaluate(doc);			
 		}

@@ -26,21 +26,11 @@ public class Test {
 		System.out.println("Return status : " + status);
 	}
 
-	public static void testSubscriber() throws Exception {
-		Web webserver = new Web(8080);
-		webserver.start();
-		Subscriber subscriber=new Subscriber(webserver);
-		Thread.sleep(30000);
-		int result=subscriber.subscribe("http://www.royans.net/rant/feed/","http://www.webtrace.info:8080/","rkt_at_pobox.com_is_testing","300");
-		System.out.println("Subscribtion status :"+result);
-	}
-
 	public static void main(String[] args) {
 		try {
-			//testPublisher();
-			testSubscriber();
-			//Discovery discovery=new Discovery();
-			//System.out.println(discovery.getHub("http://www.royans.net/rant/feed/"));
+			testPublisher();
+			Discovery discovery=new Discovery();
+			System.out.println(discovery.getHub("http://www.royans.net/rant/feed/"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
