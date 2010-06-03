@@ -2,10 +2,10 @@
 README
 ======
 
-PubSubHubbub API v3.0
+Subscriber API v3.0
 -----------------------
 
-Welcome to the PubSubHubbub API v3.0 release!  This release includes the implementation 
+Welcome to the Subscriber API v3.0 release!  This release includes the implementation 
 of the "Discovery" and "Subscribing and Unsubscribing" functionalities of the PubSubHubbub 
 protocol. You can find the PubSubHubbub specification from: 
 
@@ -17,7 +17,7 @@ For more information about the project, please check the PubSubHubbub-java at ht
 Requirements
 ------------
 
-Note that the PubSubHubbub API v3.0 release requires some Jetty web server packages.
+Note that the Subscriber API v3.0 release requires some Jetty web server packages.
 The version of the Jetty web server used for this release is version 7.0.1.v20091125.
 
 This release requires the ROME API packages too. Download latest version of the ROME API from
@@ -47,8 +47,8 @@ In case you're using Maven, you can add in your pom.xml the following dependenci
 
 Problems
 ---------
-http://groups.google.com/group/pubsubhubbub-java?pli=1
-Our web page at http://code.google.com/p/pubsubhubbub-java/ has a mailing list where 
+
+Our web page (http://code.google.com/p/pubsubhubbub-java/) has a mailing list where 
 you can ask your questions
 
 Enjoy!
